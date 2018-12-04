@@ -7,7 +7,6 @@ class UserList extends React.Component {
         super(props);
     }
 
-
     render() {
         const users = this.getUsers();
 

@@ -1,19 +1,37 @@
 import React from 'react';
-import User from "./User";
-import UserList from "./UserList";
-
-const users = [
-    { id: 1, name: "Leanne Graham" },
-    { id: 2, name: "Ervin Howell" },
-    { id: 3, name: "Clementine Bauch" },
-    { id: 4, name: "Patricia Lebsack" }
-];
+import UserList from './UserList';
+import axios from 'axios';
 
 class App extends React.Component {
+
+    state = {
+        users: []
+    };
+
+    componentDidMount() {
+        axios.get("https://jsonplaceholder.typicode.com/users")
+            .then(response => {
+                // get the data from the endpoint
+                const newUsers = response.data.map(user => {
+                   return {
+                       id: user.id,
+                       name: user.name
+                   }
+                });
+                console.log(response);
+
+                // create a new state object
+                const newState = Object.assign({}, this.state, {users: newUsers});
+
+                this.setState(newState);
+            })
+            .catch(error => console.log(error));
+    }
+
     render() {
         return (
             <div>
-                <UserList users={users} />
+                <UserList users={this.state.users} />
             </div>
         );
     }
